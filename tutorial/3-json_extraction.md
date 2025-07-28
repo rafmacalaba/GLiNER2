@@ -191,10 +191,10 @@ results = extractor.extract_json(
 
 ```python
 text = """
-Alice Brown booked the Hilton Downtown from March 10-12. She selected a double room 
+Alice Brown booked the Hilton Downtown from March 10 to March 12. She selected a double room 
 for $340 total with breakfast and parking included.
 
-Robert Taylor reserved The Grand Hotel, April 1-5, suite at $1,200 total. 
+Robert Taylor reserved The Grand Hotel, April 1 to April 5, suite at $1,200 total. 
 Amenities include breakfast, wifi, gym, and spa access.
 """
 
