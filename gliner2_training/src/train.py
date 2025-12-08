@@ -82,7 +82,7 @@ def main(base_model_id: str, num_train_epochs: int = 3, report_to: str = "none")
         eval_steps=500,
         save_strategy="steps",
         save_steps=500,
-        save_total_limit=1,
+        save_total_limit=3,
         # fp16=True,  # True if you have a GPU with fp16
         report_to=report_to,  # none/wandb/etc
         run_name=run_name,
