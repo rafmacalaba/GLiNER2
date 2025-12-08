@@ -20,11 +20,17 @@ Usage:
 
 from datetime import datetime
 from pathlib import Path
+import os
 import typer
 from loguru import logger
 from transformers import TrainingArguments
 from gliner2 import GLiNER2
 from gliner2.trainer import ExtractorDataset, ExtractorDataCollator, ExtractorTrainer
+
+# Fix for multi-GPU DataParallel issue with GLiNER2
+# Force single GPU to avoid 'DataParallel' object has no attribute 'processor' error
+if 'CUDA_VISIBLE_DEVICES' not in os.environ:
+    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 app = typer.Typer(pretty_exceptions_enable=False)
 
@@ -117,7 +123,7 @@ def main(
     fp16: bool = typer.Option(
         False,
         "--fp16",
-        help="Use mixed precision training"
+        help="Use mixed precision training (disable if you get FP16 scaler errors)"
     ),
     report_to: str = typer.Option(
         "none",
