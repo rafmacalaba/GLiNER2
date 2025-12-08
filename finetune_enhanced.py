@@ -33,7 +33,7 @@ app = typer.Typer(pretty_exceptions_enable=False)
 def main(
     # Model configuration
     base_model: str = typer.Option(
-        "fastino/gliner2-base-v1",
+        "fastino/gliner2-large-v1",
         "--base-model",
         "-m",
         help="Pre-trained model to fine-tune"
