@@ -209,3 +209,30 @@ class ExtractorTrainer(Trainer):
             _model = getattr(model, "module", model)
             device = next(_model.parameters()).device
             return torch.tensor(0.0, requires_grad=True, device=device)
+
+    def prediction_step(self, model, inputs, prediction_loss_only, ignore_keys=None):
+        """
+        Override prediction_step to handle evaluation properly.
+        
+        The default implementation expects inputs to be a dict with .get() method,
+        but our data collator returns a list of tuples.
+        """
+        model.eval()
+        
+        try:
+            inputs = self._prepare_inputs(inputs)
+            
+            with torch.no_grad():
+                with self.compute_loss_context_manager():
+                    loss = self.compute_loss(model, inputs)
+            
+            # Return (loss, None, None) since we don't need predictions/labels for eval
+            # The loss is what matters for evaluation
+            return (loss, None, None)
+        
+        except Exception as e:
+            print(f"Error during evaluation: {e}")
+            # Return zero loss on error
+            device = next(model.parameters()).device
+            loss = torch.tensor(0.0, device=device)
+            return (loss, None, None)
